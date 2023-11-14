@@ -1,5 +1,6 @@
 package com.traindemo;
 
+// import com.oblador.vectoricons.VectorIconsPackage;
 import android.app.Application;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
@@ -25,8 +26,11 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
-          return packages;
-        }
+
+//           packages.add(new VectorIconsPackage());
+       return packages;
+//
+     }
 
         @Override
         protected String getJSMainModuleName() {

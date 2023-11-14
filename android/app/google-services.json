@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "738038829467",
+    "project_id": "reactnativetutorial-4e161",
+    "storage_bucket": "reactnativetutorial-4e161.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:738038829467:android:3acf3c19600c13cd37913e",
+        "android_client_info": {
+          "package_name": "com.traindemo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvRYPZuXe7xREBSy2bJu0XWR__kRNY4MQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
