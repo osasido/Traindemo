@@ -1,8 +1,13 @@
 import React, { FC } from 'react'
 import {createStackNavigator} from '@react-navigation/stack'
 import {signup, login} from '../screens'
+type RootStackParamList = {
+    SignUp: undefined;
+    LogIn: undefined;
+    navigate?: any;
+  };
 
-const Stack = createStackNavigator()
+const Stack = createStackNavigator<RootStackParamList>()
 
 const AuthStack: FC = () => {
     return(
@@ -13,7 +18,7 @@ const AuthStack: FC = () => {
             component={signup}
             />
              <Stack.Screen
-            name='Log In'
+            name='LogIn'
             component={login}
             />
         </Stack.Navigator>

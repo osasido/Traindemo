@@ -1,8 +1,12 @@
 import React, { FC } from 'react'
 import {createStackNavigator} from '@react-navigation/stack'
 import {home, dashboard} from '../screens'
-
-const Stack = createStackNavigator()
+type RootStackParamList = {
+    Home: undefined;
+    DashBoard: undefined;
+    navigate?: any;
+  };
+const Stack = createStackNavigator<RootStackParamList>()
 
 const AppStack: FC = () => {
     return(

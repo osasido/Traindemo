@@ -1,23 +1,62 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { Input } from '../components'
 import { colors } from '../constants'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import EvilIcons from 'react-native-vector-icons/Ionicons';
 import {
     View,
     Text,
     StyleSheet,
-    Button, 
-    Dimensions,
-    SafeAreaView
+    SafeAreaView,
+    Pressable,
+    Alert
 } from 'react-native'
-import { Colors } from 'react-native/Libraries/NewAppScreen';
-const { height, width } = Dimensions.get("screen");
-const App: FC = () => {
+import { Button } from '../components';
+import { NavigationProp } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+
+
+
+interface props {
+    navigation: NavigationProp<any>;
+}
+
+const App: FC<props> = ({ navigation }: props) => {
+    const [name, setName] = useState<string | null>(null)
+    const [email, setEmail] = useState<string | null>(null)
+    const [password, setPassword] = useState<string | null>(null)
+    const [showpass, setShowpass] = useState<boolean>(false)
+    const signup = async () => {
+        if (name && email && password) {
+            try {
+                const user = await auth()
+                    .createUserWithEmailAndPassword(email!, password!)
+                    if (user) {
+                        await firestore()
+                            .collection('users')
+                            .doc(user.user.uid)
+                            .set({
+                                name: name,
+                                email: email,
+                                password: password
+                            })
+                        Alert.alert('User account created & signed in!');
+                     
+                    }
+            } catch (error) {
+                console.log(error)
+            }
+
+        } else {
+            Alert.alert('Please fill all the fields')
+        }
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.contain}>
-                <View style={styles.containIn}>
+                {/* <View style={styles.containIn}>
                     <Text
                         style=
                         {{
@@ -30,16 +69,17 @@ const App: FC = () => {
                     >
                         StudyCarePro
                     </Text>
-                </View>
+                </View> */}
                 <View style={styles.containIn}>
                     <Text
                         style=
                         {{
-                            fontSize: 21,
-                            color: colors.gray,
+                            fontSize: 26,
+                            color: colors.current,
                             fontWeight: 'bold',
                             textAlign: 'center',
-                            marginBottom: 4
+                            marginBottom: 4,
+                            opacity: 0.9
                         }}
                     >
                         Sign Up
@@ -55,10 +95,10 @@ const App: FC = () => {
                             marginTop: 10
                         }}
                     >Name</Text>
-                    <EvilIcons style={styles.icons} name='user' color={colors.deepcurrent} size={30} />
+                    <EvilIcons style={styles.icons} name='person-outline' color={colors.deepcurrent} size={24} />
                     <Input
-
-                        onChangeText={(text) => console.log(text)}
+                        placeholder='Name'
+                        onChangeText={(text) => setName(text)}
                     />
                 </View>
 
@@ -71,10 +111,11 @@ const App: FC = () => {
                             marginBottom: 10,
                             marginTop: 10
                         }}>Email Address</Text>
-                    <Icon style={styles.icons} name='email-outline' color={colors.deepcurrent} size={30} />
+                    <Icon style={styles.icons} name='email-outline' color={colors.deepcurrent} size={24} />
                     <Input
-
-                        onChangeText={(text) => console.log(text)}
+                        placeholder='Email Address'
+                        keyboardType='email-address'
+                        onChangeText={(text) => setEmail(text)}
                     />
                 </View>
                 <View style={styles.iconView}>
@@ -87,10 +128,16 @@ const App: FC = () => {
                             marginBottom: 10,
                             marginTop: 10
                         }}>Password</Text>
-                    <Icon style={styles.icons} name='lock-outline' color={colors.deepcurrent} size={30} />
+                    <Icon style={styles.icons} name='lock-outline' color={colors.deepcurrent} size={24} />
                     <Input
-                        onChangeText={(text) => console.log(text)}
+                        placeholder='Password'
+                        secureTextEntry={!showpass}
+                        onChangeText={(text) => setPassword(text)}
                     />
+
+                    <Icon style={styles.iconspass}
+                        name={showpass ? 'eye-outline' : 'eye-off-outline'}
+                        color={colors.deepcurrent} size={24} onPress={() => setShowpass(!showpass)} />
                 </View>
                 <View style={styles.iconView}>
                     <Text
@@ -102,18 +149,47 @@ const App: FC = () => {
                             marginBottom: 10,
                             marginTop: 10
                         }}>Confirm Password</Text>
-                    <Icon style={styles.icons} name='lock-outline' color={colors.deepcurrent} size={30} />
+                    <Icon style={styles.icons} name='lock-outline' color={colors.deepcurrent} size={24} />
                     <Input
-                        onChangeText={(text) => console.log(text)}
+                        placeholder='Confirm Password'
+                        secureTextEntry={!showpass}
+                        onChangeText={(text) => setPassword(text)}
                     />
+
+                    <Icon style={styles.iconspass}
+                        name={showpass ? 'eye-outline' : 'eye-off-outline'}
+                        color={colors.deepcurrent} size={24} onPress={() => setShowpass(!showpass)} />
                 </View>
                 <SafeAreaView style={styles.ButtonView}>
-                        <Button
-                       
+                    <Button
                         title='sign up'
-                        color={colors.current}
-                        />  
+                        onPress={signup}
+                    />
+
                 </SafeAreaView>
+                <View
+                    style={{
+                        position: 'absolute',
+                        bottom: 10,
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                    }}
+                >
+                    <Text
+                        style={{ fontWeight: 'bold', color: colors.gray }}>
+                        Already have an account?
+                    </Text>
+                    <Pressable
+                        onPress={() => navigation.navigate('LogIn')}
+                    >
+                        <Text
+                            style={{ fontWeight: 'bold', fontSize: 14, marginLeft: 5, color: colors.current }}
+                        >
+                            Sign In
+                        </Text>
+                    </Pressable>
+                </View>
+
 
             </View>
         </SafeAreaView>
@@ -154,12 +230,17 @@ const styles = StyleSheet.create({
 
 
     },
-    ButtonView:{
+    ButtonView: {
         textAlign: 'center',
         justifyContent: 'center',
-        width: width/1.2,
-        height: 55,
-        borderRadius: 10,
-        activeOpacity: 0.8,
-    }
+        height: 100,
+
+
+    },
+    iconspass: {
+        right: 10,
+        position: 'absolute',
+        paddingTop: 40,
+
+    },
 })
