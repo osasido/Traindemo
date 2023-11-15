@@ -2,8 +2,8 @@ import React,{FC} from "react";
 import { TextInput, StyleSheet, View, Dimensions } from "react-native";
 import { colors } from "../constants";
 interface InputProps {
-    placeholder: string;
-    value: string;
+    // placeholder: string;
+    // value: string;
     onChangeText: (text: string) => void;
     secureTextEntry?: boolean;
 }
@@ -14,10 +14,11 @@ const Input : FC <InputProps> = (props) => {
         <View style={styles.constainer}>
         <TextInput
             style={styles.input}
-            placeholder={props.placeholder}
-            value={props.value}
+            // placeholder={props.placeholder}
+            // // value={props.value}
             onChangeText={props.onChangeText}
             secureTextEntry={props.secureTextEntry}
+       
         />
         </View>
     )
@@ -27,13 +28,20 @@ export default Input;
 
 const styles = StyleSheet.create({
     constainer:{
-        width: width/1.1,
+        width: width/1.2,
         alignSelf: 'center',
-        backgroundColor: colors.primary,
-        borderRadius:5
+        borderRadius:5,
+        margin: 2,
+        
+        
     },
     input:{
-        padding: 15,
+        paddingLeft:45,
+        height: 50,
+        borderBottomWidth: 1,
+        alignContent: 'center',
+        flexDirection: 'row',
+        justifyContent: 'center',
     }
 
 })
